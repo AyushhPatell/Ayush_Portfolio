@@ -1,0 +1,17 @@
+{
+  "name": "Ayush Patel - Portfolio",
+  "short_name": "Ayush Patel",
+  "description": "Full-Stack Developer | Problem Solver | Building Solutions That Matter",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1f3a",
+  "theme_color": "#7c3aed",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
+
