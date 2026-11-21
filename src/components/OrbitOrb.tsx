@@ -28,7 +28,7 @@ interface Neuron { x: number; y: number; vx: number; vy: number; radius: number;
 interface Pulse { from: number; to: number; progress: number; speed: number; alpha: number }
 interface Particle { angle: number; orbitRadius: number; size: number; angularSpeed: number; baseOpacity: number; driftPhase: number }
 
-export default function OrbitOrb() {
+export default function OrbitOrb({ size = 200 }: { size?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // The orb always shows its listening look on the site.
   const stateRef = useRef<StateId>('listening');
@@ -302,7 +302,7 @@ export default function OrbitOrb() {
   }, []);
 
   return (
-    <div className="mx-auto aspect-square w-full max-w-[200px]">
+    <div className="mx-auto aspect-square w-full" style={{ maxWidth: size }}>
       <canvas ref={canvasRef} className="block h-full w-full" role="img" aria-label="ORBIT's orb, animated" />
     </div>
   );

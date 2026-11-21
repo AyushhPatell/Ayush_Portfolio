@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# LinkedIn thumbnails rendered from thumbs.html (kept locally, not deployed)
+linkedin-thumbnails/

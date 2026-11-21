@@ -29,3 +29,15 @@ npm run dev
 | `src/lib/tilt.ts` | Puzzle rules and the solver |
 | `src/components/` | One file per section |
 | `public/Resume.pdf` | The resume the site links to |
+
+## Thumbnails and link preview
+
+`thumbs.html` renders 1200×627 cards for LinkedIn and the site's link preview. It is only used during development and is not part of the build.
+
+```bash
+npm run dev
+# then open http://localhost:5173/thumbs.html?card=orbit
+# cards: site, orbit, expense, dayblock, kachuful, codebrief
+```
+
+`public/og.png` is the `site` card, used as the link preview.
