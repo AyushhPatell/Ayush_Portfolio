@@ -1,11 +1,11 @@
 {
-  "name": "Ayush Patel - Portfolio",
+  "name": "Ayush Patel",
   "short_name": "Ayush Patel",
-  "description": "Full-Stack Developer | Problem Solver | Building Solutions That Matter",
+  "description": "Software, data and AI developer in Halifax, Nova Scotia.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#1a1f3a",
-  "theme_color": "#7c3aed",
+  "background_color": "#0a0c10",
+  "theme_color": "#0a0c10",
   "icons": [
     {
       "src": "/favicon.svg",
@@ -14,4 +14,3 @@
     }
   ]
 }
-
