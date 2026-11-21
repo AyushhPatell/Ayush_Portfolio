@@ -1,13 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 // A web port of ORBIT's real orb (OrbitListeningHUDController.swift in the macOS app):
 // neurons firing pulses inside a dark sphere, a glassy shell, arc rings and a particle cloud.
-const STATES = [
-  { id: 'idle', label: 'Idle', note: 'Resting. Thoughts fire slowly inside.' },
-  { id: 'listening', label: 'Listening', note: 'The cloud widens and ripples while you talk.' },
-  { id: 'speaking', label: 'Speaking', note: 'Rings pulse out as ORBIT answers.' },
-] as const;
-type StateId = (typeof STATES)[number]['id'];
+// The app has three states; the site uses the listening one.
+type StateId = 'idle' | 'listening' | 'speaking';
 
 // The app's "Arctic Sharp" palette
 const C = {
@@ -34,28 +30,8 @@ interface Particle { angle: number; orbitRadius: number; size: number; angularSp
 
 export default function OrbitOrb() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [state, setState] = useState<StateId>('idle');
-  const stateRef = useRef<StateId>('idle');
-  const pickedAt = useRef(0);
-
-  useEffect(() => {
-    stateRef.current = state;
-  }, [state]);
-
-  // Cycle through the states on its own, pausing for a while after a visitor picks one.
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const id = window.setInterval(() => {
-      if (Date.now() - pickedAt.current < 9000) return;
-      setState((s) => STATES[(STATES.findIndex((x) => x.id === s) + 1) % STATES.length].id);
-    }, 4200);
-    return () => window.clearInterval(id);
-  }, []);
-
-  const pick = (id: StateId) => {
-    pickedAt.current = Date.now();
-    setState(id);
-  };
+  // The orb always shows its listening look on the site.
+  const stateRef = useRef<StateId>('listening');
 
   useEffect(() => {
     const canvas = canvasRef.current!;
@@ -325,33 +301,9 @@ export default function OrbitOrb() {
     };
   }, []);
 
-  const info = STATES.find((s) => s.id === state) ?? STATES[0];
-
   return (
-    <div className="flex flex-col items-center">
-      <button
-        onClick={() => pick(STATES[(STATES.findIndex((x) => x.id === state) + 1) % STATES.length].id)}
-        className="aspect-square w-full max-w-[190px] rounded-full"
-        aria-label={`ORBIT's orb, currently ${info.label.toLowerCase()}. Click to change state.`}
-      >
-        <canvas ref={canvasRef} className="block h-full w-full" aria-hidden="true" />
-      </button>
-      <div className="mt-2 flex flex-wrap justify-center gap-1.5" role="group" aria-label="Orb state">
-        {STATES.map((s) => (
-          <button
-            key={s.id}
-            onClick={() => pick(s.id)}
-            aria-pressed={state === s.id}
-            className="chip !px-2.5 !text-[11px] transition-colors"
-            style={state === s.id ? { borderColor: 'var(--software)', color: 'var(--ink)' } : undefined}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
-      <p className="mt-2 min-h-[2.6em] max-w-[220px] text-center text-xs text-muted" aria-live="polite">
-        {info.note}
-      </p>
+    <div className="mx-auto aspect-square w-full max-w-[200px]">
+      <canvas ref={canvasRef} className="block h-full w-full" role="img" aria-label="ORBIT's orb, animated" />
     </div>
   );
 }
