@@ -62,20 +62,24 @@ export const projects: Project[] = [
   {
     id: 'orbit',
     name: 'ORBIT',
-    tagline: 'A voice assistant for macOS that remembers, decides and acts.',
+    tagline: 'A personal AI companion that lives on my Mac. It remembers, notices and acts.',
     year: '2026 – now',
     status: 'In active development',
     areas: ['ai', 'software', 'data'],
     stack: ['Swift', 'Python', 'FastAPI', 'MLX', 'Embeddings', 'GitHub Actions'],
     summary:
-      'ORBIT is my long-running project: a personal assistant you talk to. A native Swift app handles the voice, and a Python backend handles memory, tools and the language model, which can run locally on Apple silicon.',
+      'ORBIT is my long-running project: an AI companion with its own character, not just a command box. It learns my habits, remembers what matters, and is learning when to speak up and when to stay quiet. A native Swift app handles voice and the screen. A Python backend handles memory, judgment and the language model, which can run locally on Apple silicon.',
     highlights: [
-      'Wake word, push-to-talk and a hands-free conversation mode',
-      'Controls the Mac: volume, Wi-Fi, Bluetooth, brightness, Focus, files and settings',
-      'Long-term memory with recall that drops near-duplicate memories',
-      'Over 1,000 automated tests and a replay gate in CI',
+      'Talk to it hands-free: wake word, push-to-talk and continuous conversation',
+      'Acts across the Mac: system settings, files, browsers, music, notes, messages and more, with new skills added as it grows',
+      'Long-term memory that learns my habits and preferences',
+      'A character that stays the same while its judgment matures over time',
     ],
     decisions: [
+      {
+        title: 'The model answers, the code decides',
+        body: 'The language model can suggest and word things, but it never makes a decision on its own. ORBIT’s code turns its answers into actions, so behaviour stays predictable and testable.',
+      },
       {
         title: 'A version handshake between the app and the backend',
         body: 'Updating one half without the other used to break tool calls silently. Now both sides share a protocol version, and a mismatch shows a plain-language notice instead.',
@@ -84,10 +88,6 @@ export const projects: Project[] = [
         title: 'Shadow mode before it is allowed to speak up',
         body: 'Every five minutes ORBIT decides what it would raise on its own, and only logs it. I study those logs before letting it interrupt anyone.',
       },
-      {
-        title: 'Reordering the prompt so it caches',
-        body: 'Moving the parts that change every turn to the end lets about 3,600 tokens per turn hit the cheaper cached rate, without removing anything.',
-      },
     ],
     diagram: {
       nodes: [
@@ -95,7 +95,7 @@ export const projects: Project[] = [
         { id: 'app', label: 'Swift app', x: 30, y: 50, detail: 'The native macOS app: UI, microphone, text-to-speech and system controls.' },
         { id: 'api', label: '/chat API', x: 52, y: 50, detail: 'One FastAPI contract between app and backend, guarded by a shared protocol version.' },
         { id: 'llm', label: 'Model', x: 76, y: 20, detail: 'A language model, local through MLX on Apple silicon or in the cloud, with tool calling.' },
-        { id: 'tools', label: 'Tools', x: 92, y: 50, detail: 'Actions the model can take: system settings, files, apps and lookups.' },
+        { id: 'tools', label: 'Tools', x: 92, y: 50, detail: 'Skills ORBIT can use: system settings, files, browsers, music, notes and messages. The code, not the model, decides when to use them.' },
         { id: 'memory', label: 'Memory', x: 76, y: 80, detail: 'Long-term store with embedding recall. Near-identical memories (≥0.92 cosine) are dropped and back-filled.' },
         { id: 'tick', label: 'Tick loop', x: 52, y: 86, detail: 'A background loop that decides what it would say on its own, logged in shadow mode for now.' },
       ],
@@ -172,8 +172,35 @@ export const projects: Project[] = [
         body: 'It keeps the score honest and makes the daily puzzle fair to compare with friends.',
       },
     ],
-    links: [{ label: 'Coming to the App Store', href: null }],
+    links: [
+      { label: 'Code on GitHub', href: 'https://github.com/AyushhPatell/Dayblock' },
+      { label: 'Coming to the App Store', href: null },
+    ],
     demo: 'tilt',
+  },
+  {
+    id: 'codebrief',
+    name: 'codebrief',
+    tagline: 'Point it at any codebase and get a plain-English explanation.',
+    year: '2026',
+    status: 'Working CLI',
+    areas: ['ai', 'software'],
+    stack: ['Python', 'OpenAI API', 'Git', 'CLI'],
+    summary:
+      'A command-line tool for the moment you open an unfamiliar project. Give it a local folder or a public GitHub URL. It reads the structure and the important files, then writes a clear summary of what the project is and how the pieces fit together.',
+    highlights: [
+      'Works on a local folder or a public GitHub repo',
+      'Shallow-clones repos into a temporary folder and cleans up after',
+      'Picks the files that matter instead of sending everything to the model',
+      'API key is only read from a local .env, never committed',
+    ],
+    decisions: [
+      {
+        title: 'Choose the context, don’t dump it',
+        body: 'Sending a whole repository to a model is slow and expensive. codebrief gathers the folder structure and key files first, so the model sees what a person would read first.',
+      },
+    ],
+    links: [{ label: 'Code on GitHub', href: 'https://github.com/AyushhPatell/codebrief' }],
   },
   {
     id: 'myhub',
@@ -191,25 +218,41 @@ export const projects: Project[] = [
       'Search, recurring templates, keyboard shortcuts, light and dark mode',
     ],
     decisions: [],
-    links: [{ label: 'Open the live app', href: 'https://myhub-d0f5a.web.app' }],
+    links: [
+      { label: 'Open the live app', href: 'https://myhub-d0f5a.web.app' },
+      { label: 'Code on GitHub', href: 'https://github.com/AyushhPatell/MyHub' },
+    ],
   },
   {
-    id: 'deebug',
-    name: 'DEEBUG',
-    tagline: 'An AI helper for debugging machine-learning models. Client project.',
-    year: '2025',
-    status: 'Delivered with a team',
-    areas: ['ai', 'software'],
-    stack: ['React', 'Flask', 'Python', 'Gemini', 'Google Cloud'],
+    id: 'kachuful',
+    name: 'Kachuful',
+    tagline: 'An online multiplayer version of the card game Kachuful.',
+    year: '2026',
+    status: 'Playable, still growing',
+    areas: ['software'],
+    stack: ['React', 'Vite', 'Firebase', 'Firestore', 'Tailwind', 'GitHub Actions'],
     summary:
-      'Data scientists upload a dataset and model, then chat with an assistant that suggests why the model is underperforming and what to try next.',
+      'Friends join a table with a 6-digit code, no install needed. The game handles dealing, calling, tricks, scoring and the rotating trump suit, live for every player at once.',
     highlights: [
-      'Chat interface with saved session history',
-      'Deployed on Google Cloud App Engine with CI/CD',
-      'Built in an Agile team for a real client',
+      'Real-time lobby and game state with Firestore listeners',
+      'Join requests the host approves, so strangers can’t walk in',
+      'Game rules covered by logic tests that run before every deploy',
+      'Works on phones, tablets and laptops, and can be added to the home screen',
     ],
-    decisions: [],
-    links: [{ label: 'Client project · code not public', href: null }],
+    decisions: [
+      {
+        title: 'Game rules live in plain functions',
+        body: 'Scoring, dealing and trick evaluation are pure JavaScript with no Firebase inside, so they can be tested on their own and trusted by every screen.',
+      },
+      {
+        title: 'Deploys only if the rules still pass',
+        body: 'A GitHub Actions pipeline runs the logic tests, builds and deploys on every push. A broken rule never reaches the players.',
+      },
+    ],
+    links: [
+      { label: 'Play it live', href: 'https://kachuful-70077.web.app' },
+      { label: 'Code on GitHub', href: 'https://github.com/AyushhPatell/Kachuful' },
+    ],
   },
 ];
 
@@ -279,7 +322,7 @@ export const now = {
   updated: 'November 2026',
   items: [
     'Finishing my co-op at Halifax Regional Municipality.',
-    'Daily hands-on practice in Python, SQL and Java, written without AI.',
+    'Daily hands-on practice in Python, SQL and Java.',
     'Writing a small AI agent from scratch to understand tool calling end to end.',
     'Learning modern data tooling: dbt, DuckDB and scheduled pipelines.',
   ],
@@ -288,15 +331,15 @@ export const now = {
 export const howIBuild = [
   {
     title: 'Design first',
-    body: 'I start with the problem, the data and the failure cases. ORBIT has a written constitution and a decisions log before it has features.',
+    body: 'I start with the problem, the data and the failure cases. ORBIT has a written set of rules and a decision log that every feature is checked against.',
   },
   {
-    title: 'AI is my pair programmer',
-    body: 'I build with Claude Code and review every change. I also rebuild core pieces by hand to keep my fundamentals sharp.',
+    title: 'Private by default',
+    body: 'My expense tracker never touches the internet, and ORBIT can run its model on my own Mac. If the data is personal, it stays with the person.',
   },
   {
-    title: 'Tests keep it honest',
-    body: 'Over 1,000 tests in ORBIT, a no-network test in my expense tracker, a solver checking every Dayblock puzzle.',
+    title: 'Measure before changing',
+    body: 'ORBIT logs what it would do for weeks before it is allowed to do it. I change things after I see the evidence, not before.',
   },
 ];
 

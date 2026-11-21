@@ -3,6 +3,7 @@ import { ArrowUpRight, Lock } from 'lucide-react';
 import { demoLevel, orbits, projects, type OrbitId } from '../data/content';
 import ArchDiagram from './ArchDiagram';
 import TiltPuzzle from './TiltPuzzle';
+import OrbitOrb from './OrbitOrb';
 import SectionHead from './SectionHead';
 
 const colorVar: Record<OrbitId, string> = { software: 'var(--software)', data: 'var(--data)', ai: 'var(--ai)' };
@@ -82,9 +83,14 @@ export default function Projects({ selected, onSelect }: { selected: string; onS
                   <span className="chip">{p.year}</span>
                   <span className="chip">{p.status}</span>
                 </div>
-                <h3 className="mt-5 font-display text-3xl font-extrabold sm:text-4xl">{p.name}</h3>
-                <p className="mt-2 font-display text-lg font-medium sm:text-xl">{p.tagline}</p>
-                <p className="mt-4 max-w-[65ch] text-muted">{p.summary}</p>
+                <div className={p.id === 'orbit' ? 'grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_240px]' : ''}>
+                  <div className="min-w-0">
+                    <h3 className="mt-5 font-display text-3xl font-extrabold sm:text-4xl">{p.name}</h3>
+                    <p className="mt-2 font-display text-lg font-medium sm:text-xl">{p.tagline}</p>
+                    <p className="mt-4 max-w-[65ch] text-muted">{p.summary}</p>
+                  </div>
+                  {p.id === 'orbit' && <OrbitOrb />}
+                </div>
 
                 {p.diagram && (
                   <div className="mt-7">
@@ -125,7 +131,7 @@ export default function Projects({ selected, onSelect }: { selected: string; onS
 
                 {p.decisions.length > 0 && (
                   <div className="mt-8">
-                    <div className="eyebrow mb-3">Decisions I'd defend in an interview</div>
+                    <div className="eyebrow mb-3">Key design decisions</div>
                     <div className="grid gap-3 md:grid-cols-2">
                       {p.decisions.map((d) => (
                         <details key={d.title} className="group rounded-xl border border-line bg-surface-2 p-4 open:bg-surface">

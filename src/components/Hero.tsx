@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown, FileText } from 'lucide-react';
 import OrbitCanvas from './OrbitCanvas';
@@ -13,24 +13,27 @@ const colorVar: Record<OrbitId, string> = {
 export default function Hero({ onOpenPalette }: { onOpenPalette: () => void }) {
   const [active, setActive] = useState<OrbitId>('software');
   const [hover, setHover] = useState<OrbitId | null>(null);
-  const [touched, setTouched] = useState(false);
+  const hoverRef = useRef<OrbitId | null>(null);
+  const lastTouch = useRef(0);
 
-  // Cycle through the three orbits until the visitor takes over.
+  // Cycle through the three orbits. Pause while the visitor is hovering,
+  // and for a few seconds after they pick one, then carry on.
   useEffect(() => {
-    if (touched) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const id = window.setInterval(() => {
+      if (hoverRef.current || Date.now() - lastTouch.current < 6000) return;
       setActive((a) => orbits[(orbits.findIndex((o) => o.id === a) + 1) % orbits.length].id);
     }, 3800);
     return () => window.clearInterval(id);
-  }, [touched]);
+  }, []);
 
   const onHover = useCallback((id: OrbitId | null) => {
+    hoverRef.current = id;
     setHover(id);
-    if (id) setTouched(true);
+    lastTouch.current = Date.now();
   }, []);
   const onPick = useCallback((id: OrbitId) => {
-    setTouched(true);
+    lastTouch.current = Date.now();
     setActive(id);
   }, []);
 
@@ -66,7 +69,7 @@ export default function Hero({ onOpenPalette }: { onOpenPalette: () => void }) {
           <p className="mt-5 max-w-[56ch] text-muted">
             Applied Computer Science at Dalhousie, graduating April 2027. Three co-ops across government and
             industry, now a Student Analytics Developer at Halifax Regional Municipality. Outside work I'm building
-            ORBIT, a voice assistant for the Mac.
+            ORBIT, a personal AI companion that lives on my Mac.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href="#work" className="btn btn-primary">
