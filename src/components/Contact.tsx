@@ -27,7 +27,7 @@ export default function Contact({ onOpenPalette }: { onOpenPalette: () => void }
       <div className="wrap">
         <p className="eyebrow">Contact</p>
         <h2 className="mt-3 max-w-[16ch] font-display text-[clamp(40px,7vw,76px)] font-extrabold leading-[0.98]">
-          Hiring in Nova Scotia? Let's talk.
+          Hiring? Let's talk.
         </h2>
         <p className="mt-5 max-w-[56ch] text-muted">
           I'm looking for full-time roles from May 2027 in software development, data and AI. Happy to walk you through ORBIT live.

@@ -83,7 +83,7 @@ export default function Projects({ selected, onSelect }: { selected: string; onS
                   <span className="chip">{p.year}</span>
                   <span className="chip">{p.status}</span>
                 </div>
-                <div className={p.id === 'orbit' ? 'grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_240px]' : ''}>
+                <div className={p.id === 'orbit' ? 'grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_210px]' : ''}>
                   <div className="min-w-0">
                     <h3 className="mt-5 font-display text-3xl font-extrabold sm:text-4xl">{p.name}</h3>
                     <p className="mt-2 font-display text-lg font-medium sm:text-xl">{p.tagline}</p>

@@ -68,7 +68,7 @@ export const projects: Project[] = [
     areas: ['ai', 'software', 'data'],
     stack: ['Swift', 'Python', 'FastAPI', 'MLX', 'Embeddings', 'GitHub Actions'],
     summary:
-      'ORBIT is my long-running project: an AI companion with its own character, not just a command box. It learns my habits, remembers what matters, and is learning when to speak up and when to stay quiet. A native Swift app handles voice and the screen. A Python backend handles memory, judgment and the language model, which can run locally on Apple silicon.',
+      'An AI companion with its own character, not just a command box. It learns my habits, remembers what matters, and is learning when to speak up and when to stay quiet. A native Swift app handles voice and the screen. A Python backend handles memory, judgment and the language model, which can run locally on Apple silicon.',
     highlights: [
       'Talk to it hands-free: wake word, push-to-talk and continuous conversation',
       'Acts across the Mac: system settings, files, browsers, music, notes, messages and more, with new skills added as it grows',
