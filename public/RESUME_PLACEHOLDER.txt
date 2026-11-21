@@ -1,6 +1,0 @@
-IMPORTANT: Please add your resume.pdf file to this directory (public/).
-
-The Contact section has a "Download Resume" button that will link to /resume.pdf.
-
-Simply rename your resume file to "resume.pdf" and place it in the public/ directory.
-

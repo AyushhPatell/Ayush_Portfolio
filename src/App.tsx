@@ -1,101 +1,46 @@
-import { useEffect } from 'react';
-import Navigation from './components/Navigation';
-import HeroSection from './components/HeroSection';
-import AboutSection from './components/AboutSection';
-import ExperienceSection from './components/ExperienceSection';
-import ProjectsSection from './components/ProjectsSection';
-import SkillsSection from './components/SkillsSection';
-import UniqueAngleSection from './components/UniqueAngleSection';
-import ContactSection from './components/ContactSection';
-import './App.css';
+import { useCallback, useEffect, useState } from 'react';
+import Nav from './components/Nav';
+import Hero from './components/Hero';
+import Projects from './components/Projects';
+import Experience from './components/Experience';
+import About from './components/About';
+import Contact from './components/Contact';
+import CommandPalette from './components/CommandPalette';
+import { projects } from './data/content';
 
-function App() {
+export default function App() {
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [project, setProject] = useState(projects[0].id);
+
+  const openPalette = useCallback(() => setPaletteOpen(true), []);
+  const closePalette = useCallback(() => setPaletteOpen(false), []);
+  const selectProject = useCallback((id: string) => setProject(id), []);
+
   useEffect(() => {
-    // Custom cursor effect
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    cursor.style.cssText = `
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      border: 2px solid rgba(124, 58, 237, 0.8);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width 0.2s, height 0.2s, border-color 0.2s;
-      mix-blend-mode: difference;
-    `;
-    document.body.appendChild(cursor);
-
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'custom-cursor-dot';
-    cursorDot.style.cssText = `
-      position: fixed;
-      width: 4px;
-      height: 4px;
-      background: rgba(124, 58, 237, 0.8);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: difference;
-    `;
-    document.body.appendChild(cursorDot);
-
-    const updateCursor = (e: MouseEvent) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-      cursorDot.style.left = e.clientX + 'px';
-      cursorDot.style.top = e.clientY + 'px';
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setPaletteOpen((o) => !o);
+      }
     };
-
-    const handleMouseEnter = () => {
-      cursor.style.width = '40px';
-      cursor.style.height = '40px';
-      cursor.style.borderColor = 'rgba(59, 130, 246, 0.8)';
-    };
-
-    const handleMouseLeave = () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      cursor.style.borderColor = 'rgba(124, 58, 237, 0.8)';
-    };
-
-    document.addEventListener('mousemove', updateCursor);
-    
-    // Add hover effects to interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, [role="button"]');
-    interactiveElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleMouseEnter);
-      el.addEventListener('mouseleave', handleMouseLeave);
-    });
-
-    return () => {
-      document.removeEventListener('mousemove', updateCursor);
-      interactiveElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
-      cursor.remove();
-      cursorDot.remove();
-    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, []);
 
   return (
-    <div className="App">
-      <Navigation />
+    <>
+      <a href="#work" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-ink focus:px-3 focus:py-2 focus:text-bg">
+        Skip to work
+      </a>
+      <Nav onOpenPalette={openPalette} />
       <main>
-        <HeroSection />
-        <AboutSection />
-        <ExperienceSection />
-        <ProjectsSection />
-        <SkillsSection />
-        <UniqueAngleSection />
-        <ContactSection />
+        <Hero onOpenPalette={openPalette} />
+        <Projects selected={project} onSelect={selectProject} />
+        <Experience />
+        <About />
+        <Contact onOpenPalette={openPalette} />
       </main>
-    </div>
+      <CommandPalette open={paletteOpen} onClose={closePalette} onSelectProject={selectProject} />
+    </>
   );
 }
-
-export default App;
